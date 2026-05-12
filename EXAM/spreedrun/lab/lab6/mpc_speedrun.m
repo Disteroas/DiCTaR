@@ -1,0 +1,212 @@
+close all
+clear
+addpath("MPCtools/")
+A = [0 1; 0 -1];
+B = [0;1];
+x0 = [0;0];
+C = [1 0];
+Ts = 0.05;
+
+sys = ss(A,B,C,0);
+sys_dt = c2d(sys,Ts,'zoh');
+
+Ad = sys_dt.A;
+Bd = sys_dt.B;
+Cd = sys_dt.C;
+Hp = 2/Ts +5;
+Hu = Hp;
+Q = 1;
+md = MPCInit(Ad,Bd,eye(2),Cd,0,Cd,0,Hp,1,1,Hu,1, ...
+ 		      inf,-inf,1,-1,inf, ...
+ 		      -inf,Q,1,[],[],Ts,0,'qp_as');
+
+% sim
+Tend = 5;
+sys_x = ss(A,B,eye(2),0);
+
+out = sim("ex1lab6.slx");
+y = out.y;
+r = out.r;
+
+figure
+plot(r.time,r.data,'r--');
+hold on
+plot(y.time,y.data,'b')
+
+
+% tuning
+% first thing -> bound
+
+md = MPCInit(Ad,Bd,eye(2),Cd,0,Cd,0,Hp,1,1,Hu,1, ...
+ 		      inf,-inf,1,-1,1.01, ...
+ 		      -inf,Q,1,[],[],Ts,0,'qp_as');
+
+clear out
+
+out = sim("ex1lab6.slx");
+y = out.y;
+r = out.r;
+
+figure
+plot(r.time,r.data,'r--');
+hold on
+plot(y.time,y.data,'b')
+xline(2*1.05);
+xline(2*0.95);
+
+% act on Q
+
+Q = 10;
+md = MPCInit(Ad,Bd,eye(2),Cd,0,Cd,0,Hp,1,1,Hu,1, ...
+ 		      inf,-inf,1,-1,1.01, ...
+ 		      -inf,Q,1,[],[],Ts,0,'qp_as');
+
+clear out
+
+out = sim("ex1lab6.slx");
+y = out.y;
+r = out.r;
+
+figure
+plot(r.time,r.data,'r--');
+hold on
+plot(y.time,y.data,'b')
+xline(2*1.05);
+xline(2*0.95);
+
+
+%%
+close all
+clear
+A = [0 1; 0 -1];
+B = [0;1];
+x0 = [1;0];
+C = [1 0];
+
+Ts = 0.05;
+
+sys = ss(A,B,C,0);
+sysdt = c2d(sys,Ts,'zoh');
+Ad = sysdt.a;
+Bd = sysdt.b;
+Hp = 2.5/Ts +5;
+Hu = Hp;
+u_max = 5.5;
+u_min = -5.5;
+du_max = 3;
+du_min = -3;
+Q = [1 0; 0 1];
+R = 1;
+md = MPCInit(Ad,Bd,eye(2),eye(2),zeros(2,1),eye(2),zeros(2,1),Hp,1,1,Hu,1, ...
+ 		      du_max,du_min,u_max,u_min,[inf; inf], ...
+ 		      [-inf; -inf],Q,R,[],[],Ts,0,'qp_as');
+clear out
+% sim
+Tend = 5;
+sys_x = ss(A,B,eye(2),0);
+
+
+out = sim("lab7ex1.slx");
+
+x = out.x;
+
+figure
+plot(x.time, sqrt(x.data(:,1).^2 + x.data(:,2).^2))
+xline(2.5*1.05)
+xline(2.5*0.95)
+yline(10e-4)
+
+figure
+plot(x.time, x.data(:,2))
+
+% tuning
+Q = [3000 0; 0 1];
+R = 1;
+
+md = MPCInit(Ad,Bd,eye(2),eye(2),zeros(2,1),eye(2),zeros(2,1),Hp,1,1,Hu,1, ...
+ 		      du_max,du_min,u_max,u_min,[inf; inf], ...
+ 		      [-inf; -inf],Q,R,[],[],Ts,0,'qp_as');
+clear out
+% sim
+Tend = 5;
+sys_x = ss(A,B,eye(2),0);
+
+
+out = sim("lab7ex1.slx");
+
+x = out.x;
+
+figure
+plot(x.time, sqrt(x.data(:,1).^2 + x.data(:,2).^2))
+xline(2.5*1.05)
+xline(2.5*0.95)
+yline(1e-4)
+
+figure
+plot(x.time, x.data(:,2))
+
+
+% Hp
+
+Hp = 2.5/Ts;
+Hu = Hp;
+
+
+md = MPCInit(Ad,Bd,eye(2),eye(2),zeros(2,1),eye(2),zeros(2,1),Hp,1,1,Hu,1, ...
+ 		      du_max,du_min,u_max,u_min,[inf inf], ...
+ 		      [-inf -inf],Q,R,[],[],Ts,0,'qp_as');
+clear out
+% sim
+Tend = 5;
+sys_x = ss(A,B,eye(2),0);
+
+
+out = sim("lab7ex1.slx");
+
+x = out.x;
+
+figure
+plot(x.time, sqrt(x.data(:,1).^2 + x.data(:,2).^2))
+xline(2.5*1.05)
+xline(2.5*0.95)
+yline(10e-4)
+
+figure
+plot(x.time, x.data(:,2))
+
+
+%% 
+A = 0.9048;
+B = 0.0952;
+x0 = 0.2;
+Ac = [A;A^2;A^3];
+Bc = [B 0 0;A*B B 0; A^2*B A*B B];
+Qc = blkdiag(1,1,1);
+Rc = blkdiag(1,1,1);
+
+H = 2*(Bc'*Qc*Bc + Rc);
+F = 2*Ac'*Qc*Bc;
+
+U = -H\(F'*x0)
+
+X = Ac*x0 + Bc*U
+
+%% 
+
+A = 0.9048;
+B = 0.0952;
+x0 = 0.2;
+
+Ac = [A;A^2;A^3];
+Bc = [B 0 0; A*B B 0; A^2*B A*B B];
+Qc = blkdiag(1,1,1);
+Rc = blkdiag(1,1,1);
+
+H = 2*(Bc'*Qc*Bc + Rc);
+H = (H+H')/2;
+F = 2*Ac'*Qc*Bc;
+G = [eye(3);-eye(3)];
+h = 0.02*ones(6,1);
+U = quadprog(H,x0'*F, G,h)
+
+X = Ac*x0 + Bc*U
