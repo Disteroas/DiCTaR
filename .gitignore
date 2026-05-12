@@ -1,0 +1,25 @@
+# --- Dati e File Pesanti ---
+*.mat
+*.dat
+*.bin
+
+# --- Cartelle di Progetto e Cache ---
+# Esclude la cartella sprj e qualsiasi cartella che finisce in prj
+sprj/
+*prj/
+# Esclude tutte le cartelle cache ovunque siano
+**/cache/
+*cache/
+
+# --- Temporanei MATLAB ---
+*.asv
+*.slxc
+
+# Ignora ogni cartella slprj a qualsiasi livello della gerarchia
+**/slprj/
+slprj/
+
+# Già che ci sei, fai lo stesso per le altre cartelle di progetto e cache
+**/sprj/
+**/cache/
+*cache/
