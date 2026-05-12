@@ -14,11 +14,11 @@ This repository contains a collection of materials I developed during the course
 
 The goal of this project is to provide a helpful reference for fellow students tackling this subject.
 
-[!WARNING]
-Disclaimer: while I have put significant effort into these files, please note that they 
-are not perfect. Errors may occur, and this repository should not be considered
- a definitive guide for the theoretical aspects of the Dictar course. I recommend 
-using these materials primarily to integrate and verify your own exercises and labs.
+> [!WARNING] 
+> Disclaimer: while I have put significant effort into these files, please note that they 
+> are not perfect. Errors may occur, and this repository should not be considered
+> a definitive guide for the theoretical aspects of the Dictar course. I recommend 
+> using these materials primarily to integrate and verify your own exercises and labs.
 
 If you spot any bugs or inaccuracies, please let me know via email (s353121) (or your preferred contact).
 
