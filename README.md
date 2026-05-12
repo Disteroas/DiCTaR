@@ -1,4 +1,4 @@
-# Digital Control Technologies and Architecture repository
+# Digital Control Technologies and Architectures repository
 👋 **About Me**
 
 My name is Davide, a Mechatronics Engineering student with a strong passion for everything related to Control Systems.
