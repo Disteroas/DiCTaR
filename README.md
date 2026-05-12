@@ -1,4 +1,4 @@
-# Dictar repo
+# Digital Control Technologies and Architecture repository
 👋 **About Me**
 
 My name is Davide, a Mechatronics Engineering student with a strong passion for everything related to Control Systems.
